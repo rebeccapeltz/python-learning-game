@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PyJump — Learn Python by Jumping</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐍</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="boot-screen">
+  <div class="boot-card">
+    <div class="boot-title">🐍 PyJump</div>
+    <div class="boot-sub">Learn Python by Jumping</div>
+    <div class="boot-status" id="boot-status">Booting Python engine…</div>
+    <div class="boot-bar"><div class="boot-bar-fill" id="boot-bar-fill"></div></div>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+
+  <header id="hud">
+    <div class="hud-left">
+      <span class="hud-logo">🐍 PyJump</span>
+    </div>
+    <div class="hud-mid" id="level-title">Level 1</div>
+    <div class="hud-right">
+      <span class="hud-item">🪙 <span id="coin-count">0</span></span>
+      <span class="hud-item">🚩 <span id="level-count">1</span>/<span id="level-total">10</span></span>
+      <span class="hud-item">❤️ <span id="lives-count">3</span></span>
+    </div>
+  </header>
+
+  <main id="game-wrap">
+    <canvas id="game-canvas" width="900" height="340"></canvas>
+
+    <div id="challenge-panel">
+      <div class="panel-header">
+        <span id="concept-badge">Concept</span>
+        <h2 id="challenge-title">Challenge</h2>
+      </div>
+      <p id="challenge-prompt">Prompt goes here.</p>
+
+      <pre id="challenge-given" class="given-code hidden"></pre>
+
+      <textarea id="code-editor" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+
+      <div class="panel-actions">
+        <button id="run-btn" class="btn btn-primary">▶ Run &amp; Jump</button>
+        <button id="hint-btn" class="btn btn-secondary hidden">💡 Hint</button>
+        <button id="reset-btn" class="btn btn-ghost">↺ Reset Code</button>
+      </div>
+
+      <div id="feedback" class="feedback hidden"></div>
+      <div id="hint-box" class="hint-box hidden"></div>
+    </div>
+  </main>
+
+  <footer id="console-wrap">
+    <div class="console-label">Output</div>
+    <pre id="console-output"></pre>
+  </footer>
+</div>
+
+<div id="win-screen" class="overlay hidden">
+  <div class="overlay-card">
+    <div class="overlay-title">🏆 You reached the flag!</div>
+    <p>You solved every challenge and made it across the world.</p>
+    <p id="final-stats"></p>
+    <button id="play-again-btn" class="btn btn-primary">Play Again</button>
+  </div>
+</div>
+
+<div id="gameover-screen" class="overlay hidden">
+  <div class="overlay-card">
+    <div class="overlay-title">💀 Game Over</div>
+    <p>You ran out of lives. Debugging is part of the journey — try again!</p>
+    <button id="retry-btn" class="btn btn-primary">Retry Level</button>
+  </div>
+</div>
+
+<script src="vendor/pyodide/pyodide.js"></script>
+<script src="levels.js"></script>
+<script src="pyodide-runner.js"></script>
+<script src="game.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
