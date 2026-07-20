@@ -31,6 +31,7 @@
 
   const gameoverScreen = el("gameover-screen");
   const retryBtn = el("retry-btn");
+  const muteBtn = el("mute-btn");
 
   let lives = 3;
   let failCount = 0;
@@ -95,6 +96,7 @@
       feedback.textContent = "✅ Correct! Jumping to the next platform…";
       feedback.classList.remove("error");
       feedback.classList.add("success");
+      AudioEngine.playSuccess();
       Game.jumpToNext();
       // lockInput stays true; setupLevelUI (called from onLevelComplete) will
       // re-lock for the new level, and onReadyForInput unlocks once landed.
@@ -103,6 +105,7 @@
       feedback.textContent = "❌ " + result.error;
       feedback.classList.remove("success");
       feedback.classList.add("error");
+      AudioEngine.playFail();
       Game.shakeFail();
       runBtn.textContent = "▶ Run & Jump";
       lockInput(false);
@@ -121,6 +124,8 @@
     livesCountEl.textContent = lives;
     if (lives <= 0) {
       lockInput(true);
+      AudioEngine.stopMusic();
+      AudioEngine.playGameOver();
       gameoverScreen.classList.remove("hidden");
     } else {
       feedback.textContent += `\n💥 You fell in! ${lives} ${lives === 1 ? "life" : "lives"} left.`;
@@ -162,7 +167,17 @@
     livesCountEl.textContent = lives;
     setupLevelUI(Game.currentLevel);
     Game.loadLevel(Game.currentLevel);
+    AudioEngine.startMusic();
   });
+
+  muteBtn.addEventListener("click", () => {
+    const isMuted = AudioEngine.toggleMute();
+    muteBtn.textContent = isMuted ? "🔇" : "🔊";
+  });
+
+  // Autoplay policies require a user gesture before audio can start.
+  document.addEventListener("pointerdown", () => AudioEngine.resume(), { once: true });
+  document.addEventListener("keydown", () => AudioEngine.resume(), { once: true });
 
   function escapeHtml(str) {
     return str.replace(/[&<>"']/g, (c) => ({
@@ -178,6 +193,7 @@
 
   Game.on("onLevelComplete", (finishedIndex, coins) => {
     coinCountEl.textContent = coins;
+    AudioEngine.playCoin();
     if (Game.currentLevel < LEVELS.length) {
       setupLevelUI(Game.currentLevel);
     }
@@ -185,6 +201,8 @@
 
   Game.on("onVictory", (coins) => {
     finalStats.textContent = `Final score: ${coins} coins across ${LEVELS.length} worlds.`;
+    AudioEngine.stopMusic();
+    AudioEngine.playVictory();
     winScreen.classList.remove("hidden");
   });
 

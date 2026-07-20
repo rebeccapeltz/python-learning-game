@@ -101,8 +101,19 @@ html, body {
 }
 .hud-logo { color: var(--accent); }
 .hud-mid { color: #fff; }
-.hud-right { display: flex; gap: 16px; }
+.hud-right { display: flex; align-items: center; gap: 16px; }
 .hud-item { color: #fff; }
+.hud-btn {
+  background: none;
+  border: 2px solid #444;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 13px;
+  padding: 4px 7px;
+  cursor: pointer;
+  line-height: 1;
+}
+.hud-btn:hover { border-color: var(--accent); }
 
 #game-wrap {
   display: flex;
