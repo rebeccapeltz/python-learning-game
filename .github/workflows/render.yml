@@ -4,8 +4,6 @@ on:
   push:
     branches: ["main", "master"] # Triggers on push to common default branches
   workflow_dispatch: # Allows manual runs from the Actions tab
-  schedule:
-    - cron: "*/30 * * * *" # Temporary auto-retry while GitHub Actions has outages
 
 permissions:
   contents: read
