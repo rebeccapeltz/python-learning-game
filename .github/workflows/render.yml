@@ -1,30 +1,32 @@
-name: Render and Deploy
+name: Deploy static content to Pages
 
-# Trigger this action every time code is pushed to the main branch
 on:
   push:
-    branches:
-      - main
+    branches: ["main"] # Triggers on push to the main branch
+
+permissions:
+  contents: read
+  pages: write       # Requires permission to write to GitHub Pages
+  id-token: write    # Required for secure deployment authentication
 
 jobs:
-  build-and-render:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      # Step 1: Clone the repository files into the environment
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # Step 2: Set up your project environment (Example: Node.js)
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          node-version: '20'
+          path: '.' # Uploads the entire repository root folder
 
-      # Step 3: Install necessary project dependencies
-      - name: Install dependencies
-        run: npm install
-
-      # Step 4: Execute your specific rendering/building script
-      - name: Run render build
-        run: npm run build
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
